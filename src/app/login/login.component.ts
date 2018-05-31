@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { ReactiveFormsModule, FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
 
 
 // import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -37,16 +39,17 @@ export class LoginComponent implements OnInit {
       .catch((err) => console.log('error: ' + err));
   }
 
-  ngOnInit() {
-    // console.log(this.authService.isLoggedIn())
-    if (this.authService.isLoggedIn() == true) {
-      console.log("hit");
-      this.router.navigate(['home']);
+  checkIfLoggedIn() {
+    let loggedIn = false;
+    if (firebase.auth().currentUser != null) {
+      return true;
+    } else {
+      return false;
     }
   }
 
-  onSubmit() {
-    console.log(this.userForm.get("email").value);
-  }
+  ngOnInit() {
+    this.checkIfLoggedIn()
 
+  }
 }

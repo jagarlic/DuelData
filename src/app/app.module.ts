@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from './services/auth.service';
@@ -17,6 +18,10 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { SignUpModalComponent } from './sign-up-modal/sign-up-modal.component';
 import { EventComponent } from './elements/event/event.component';
+import { RoundrobinComponent } from './elements/event/roundrobin/roundrobin.component';
+import { SwissComponent } from './elements/event/swiss/swiss.component';
+import { PasteventsComponent } from './elements/pastevents/pastevents.component';
+import { NavComponent } from './elements/nav/nav.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +30,11 @@ import { EventComponent } from './elements/event/event.component';
     HomeComponent,
     LoginComponent,
     SignUpModalComponent,
-    EventComponent
+    EventComponent,
+    RoundrobinComponent,
+    SwissComponent,
+    PasteventsComponent,
+    NavComponent
   ],
   imports: [
     BrowserModule,
@@ -35,9 +44,10 @@ import { EventComponent } from './elements/event/event.component';
     NgbModule.forRoot(),
     AppRoutes,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularFirestoreModule
   ],
-  providers: [AuthService, AuthGuard],
+  providers: [AuthService, AuthGuard, AngularFirestore],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,28 @@
+<app-nav></app-nav>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-8 col-centered">
+      <h3 class="text-center">Your Past Events</h3>
+      <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+        <ngb-panel *ngFor="let event of this.events | async">
+          <ng-template ngbPanelTitle>
+            <span class="eventName"> {{event.name}} </span>
+            <span class="eventFormat"> {{event.format}} </span>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <ul class="list-group">
+              <li class="list-group-item" *ngFor="let player of event.players; let i = index">
+                {{i + 1}}. {{player.name}} ({{player.setWins}} - {{player.losses}})
+                <span *ngIf="checkColors(player, 'W')" class="badge badge-light">White</span>
+                <span *ngIf="checkColors(player, 'U')" class="badge badge-primary">Blue</span>
+                <span *ngIf="checkColors(player, 'B')" class="badge badge-dark">Black</span>
+                <span *ngIf="checkColors(player, 'G')" class="badge badge-success">Green</span>
+                <span *ngIf="checkColors(player, 'R')" class="badge badge-danger">Red</span>
+              </li>
+            </ul>
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+    </div>
+  </div>
+</div>

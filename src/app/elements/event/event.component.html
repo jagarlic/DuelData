@@ -1,3 +1,67 @@
-<p>
-  event works!
-</p>
+<div class="container">
+  <div class="eventForm" *ngIf="!validated">
+    <h3 align="center">New Event</h3>
+    <p>
+      <ngb-alert type="danger" (close)="formatEventValidationAlert = null" *ngIf="formatEventValidationAlert">
+        {{ formatEventValidationAlert }}
+      </ngb-alert>
+      <ngb-alert type="danger" (close)="playerValidationAlert = null" *ngIf="playerValidationAlert">
+        {{ playerValidationAlert }}
+      </ngb-alert>
+    </p>
+    <div class="row">
+      <div class="col-sm-12 col-md-3">
+        <input class="form-control" #eventName (blur)="logEventName(eventName.value)" placeholder="Event Name">
+      </div>
+      <div class="col-sm-12 col-md-3 text-center">
+        <div ngbDropdown class="d-inline-block">
+          <button class="btn btn-outline-primary" id="eventType" ngbDropdownToggle>{{selectedEventType}}</button>
+          <div ngbDropdownMenu aria-labelledby="eventType">
+            <button class="dropdown-item" *ngFor="let type of eventTypes" (click)="selectEventType(type)">{{type}}</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-3 text-center">
+        <div ngbDropdown class="d-inline-block">
+          <button class="btn btn-outline-primary" id="draftFormat" ngbDropdownToggle>{{selectedDraftFormat}}</button>
+          <div ngbDropdownMenu aria-labelledby="draftFormat">
+            <button class="dropdown-item" *ngFor="let format of draftFormats" (click)="selectDraftFormat(format)">{{format}}</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        <input class="form-control" #playerCount (keyup)="playerCountLog(playerCount.value)" (blur)="playerCountLog(playerCount.value)"
+          placeholder="Number of Players">
+      </div>
+
+    </div>
+    <div class="text-center playerLogDiv">
+      <ul style="padding-left: 0">
+        <li *ngFor="let player of players">
+          <input class="form-control" #playerName (blur)="playerNameLog(player, playerName.value)" placeholder="Player Name" required>
+          <div class="btn-group text-center btn-group-toggle">
+            <label class="btn-light colorBtn" ngbButtonLabel>
+              <input type="checkbox" (click)="addColorToPlayer(player, 'W')" ngbButton> White
+            </label>
+            <label class="btn-primary colorBtn" ngbButtonLabel>
+              <input type="checkbox" (click)="addColorToPlayer(player, 'U')" ngbButton> Blue
+            </label>
+            <label class="btn-dark colorBtn" ngbButtonLabel>
+              <input type="checkbox" (click)="addColorToPlayer(player, 'B')" ngbButton> Black
+            </label>
+            <label class="btn-danger colorBtn" ngbButtonLabel>
+              <input type="checkbox" (click)="addColorToPlayer(player, 'R')" ngbButton> Red
+            </label>
+            <label class="btn-success colorBtn" ngbButtonLabel>
+              <input type="checkbox" (click)="addColorToPlayer(player, 'G')" ngbButton> Green
+            </label>
+          </div>
+        </li>
+        <button type="button" class="btn btn-primary move-down" (click)="createEvent()">Create Event</button>
+      </ul>
+    </div>
+  </div>
+  <app-swiss *ngIf="selectedEventType == 'Swiss' && validated" [players]="players"></app-swiss>
+  <app-roundrobin *ngIf="selectedEventType == 'Round Robin' && validated" 
+  [players]="players" [eventName]="eventName" [setName]="selectedDraftFormat"></app-roundrobin>
+</div>

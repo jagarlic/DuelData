@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { NavComponent } from '../elements/nav/nav.component'
+import { PasteventsComponent } from '../elements/pastevents/pastevents.component'
 
 @Component({
   selector: 'app-home',
@@ -12,7 +14,7 @@ export class HomeComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
-    console.log(this.authService.getUserData());
+    // console.log(this.authService.getUserData());
   }
 
   signOut() {
@@ -21,6 +23,10 @@ export class HomeComponent implements OnInit {
 
   newEvent() {
     this.router.navigate(['event']);
+  }
+
+  toPastEvents() {
+    this.router.navigate(['pastevents']);
   }
 
 }

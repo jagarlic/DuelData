@@ -1,18 +1,27 @@
-<div class="container">
-    <button type="button" class="btn btn-outline-dark" (click)="signOut()">Sign Out</button>
+<app-nav></app-nav>
+<div class="container homeContainer">
+  <!-- <app-nav></app-nav> -->
+  <div class="row">
+    <div class="col-sm-12">
+      <button type="button" class="btn btn-outline-dark" style="float:right; margin-bottom: 25px;" (click)="signOut()">Sign Out</button>
+    </div>
+  </div>
   <div class="row">
     <div class="col-md-4 col-sm-12">
-      <div class="card" (click)="newEvent()">
+      <div class="card text-center home-card vertical-center" (click)="newEvent()">
+        <i style="font-size:3em; color:Tomato; padding-bottom:10px;" class="fas fa-calendar"></i>
         Create New Event
       </div>
     </div>
     <div class="col-md-4 col-sm-12">
-      <div class="card">
-        View Your Past Events
+      <div class="card text-center home-card vertical-center" (click)="toPastEvents()">
+        <i style="font-size:3em; color:Tomato; padding-bottom:10px;" class="far fa-user-circle"></i>
+        Your Past Events
       </div>
     </div>
     <div class="col-md-4 col-sm-12">
-      <div class="card">
+      <div class="card text-center home-card vertical-center">
+        <i style="font-size:3em; color:Tomato; padding-bottom:10px;" class="fas fa-chart-bar"></i>
         Format Statistics
       </div>
     </div>

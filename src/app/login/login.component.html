@@ -1,14 +1,14 @@
-<div class="main__body">
+<div class="main__body text-center">
   <div class="container">
 
     <div class="login__page">
       <div class="row">
-        <div class="card col-md-4 col-lg-6">
+        <div class="card col-md-4 col-lg-4">
           <div class="login__card">
             <div class="card-block">
 
               <!-- <button type="button" id="signUpBtn" class="btn btn-block" (click)="">Sign Up</button> -->
-              <app-sign-up-modal></app-sign-up-modal>
+              <!-- <app-sign-up-modal></app-sign-up-modal> -->
 
               <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
                 <h3 align="center">Login</h3>
@@ -29,6 +29,7 @@
                 </div>
 
                 <hr>
+                <app-sign-up-modal></app-sign-up-modal>
 
               </form>
 

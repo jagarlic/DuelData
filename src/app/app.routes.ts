@@ -3,8 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { EventComponent } from './elements/event/event.component';
-
-import { AuthGuard } from './services/auth-guard.service';
+import { PasteventsComponent } from './elements/pastevents/pastevents.component';
 
 const appRoutes: Routes = [
     {
@@ -13,13 +12,17 @@ const appRoutes: Routes = [
     },
     {
         path: 'home',
-        canActivate: [AuthGuard],
+        // canActivate: [AuthGuard],
         component: HomeComponent
     },
     {
         path: 'event',
-        canActivate: [AuthGuard],
+        // canActivate: [AuthGuard],
         component: EventComponent
+    }, 
+    {
+        path: 'pastevents',
+        component: PasteventsComponent
     }
 ];
 

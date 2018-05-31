@@ -1,0 +1,10 @@
+.eventName {
+    color: tomato;
+    font-size: 20px;
+}
+
+.eventFormat {
+    float: right;
+    color: #007bff;
+    font-size: 20px;
+}

@@ -7,15 +7,6 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { Observable, of } from 'rxjs';
 
-
-interface User {
-  uid: string;
-  email: string;
-  photoURL?: string;
-  displayName?: string;
-  favoriteColor?: string;
-}
-
 @Injectable()
 export class AuthService {
   private user: Observable<firebase.User>;
@@ -53,24 +44,17 @@ export class AuthService {
   }
 
   isLoggedIn() {
-    if (this._firebaseAuth.auth.currentUser != null) {
-      this.loggedIn = true;
+    let loggedIn = false;
+    if (firebase.auth().currentUser != null) {
+      return true;
     } else {
-      this.loggedIn = false;
+      return false;
     }
-    return this.loggedIn;
   }
 
   getUserData() {
-    this.user.subscribe((user) => {
-      if (user) {
-        this.userDetails = user;
-        return user.displayName;
-      }
-      else {
-        return null;
-      }
-    })
+    console.log(typeof firebase.auth().currentUser);
+    return firebase.auth().currentUser;
   }
 
   logout() {

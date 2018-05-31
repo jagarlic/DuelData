@@ -1,0 +1,16 @@
+.dropdownRight {
+    float: left;
+}
+
+.dropdownLeft {
+    float: right;
+}
+
+.vs {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.rrCard {
+    max-width: 600px;
+}

@@ -1,0 +1,9 @@
+.home-card {
+    min-height: 300px;
+    font-size: 2em;
+    margin-bottom: 25px;
+}
+
+.home-card:hover {
+    border-color: #007bff;
+}

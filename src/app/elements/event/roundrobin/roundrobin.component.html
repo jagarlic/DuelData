@@ -1,0 +1,50 @@
+<h3 class="text-center">Round Robin Event</h3>
+<div class="row">
+  <div class="col-md-6 col-centered" *ngIf="!eventSubmitted">
+    <div class="card rrCard">
+      <ul class="list-group">
+        <li class="list-group-item text-center" *ngFor="let player of pairTable[1]; let i = index">
+          ({{pairTable[0][i].setWins}} - {{pairTable[0][i].losses}}) {{pairTable[0][i].name}}
+          <div *ngIf="player.name != 'Bye' && pairTable[0][i].name != 'Bye'" ngbDropdown class="d-inline-block dropdownRight">
+            <button class="btn btn-outline-primary" id="eventType" ngbDropdownToggle>{{pairTable[0][i].currentRoundCount}}</button>
+            <div ngbDropdownMenu aria-labelledby="eventType">
+              <button class="dropdown-item" (click)="logWin('0', pairTable[0][i])">0</button>
+              <button class="dropdown-item" (click)="logWin('1', pairTable[0][i])">1</button>
+              <button class="dropdown-item" (click)="logWin('2', pairTable[0][i])">2</button>
+            </div>
+          </div>
+          <span class="vs">VS</span>
+          {{player.name}} ({{player.setWins}} - {{player.losses}})
+          <div *ngIf="player.name != 'Bye' && pairTable[0][i].name != 'Bye'" ngbDropdown class="d-inline-block dropdownLeft">
+            <button class="btn btn-outline-primary" id="eventType" ngbDropdownToggle>{{player.currentRoundCount}}</button>
+            <div ngbDropdownMenu aria-labelledby="eventType">
+              <button class="dropdown-item" (click)="logWin('0', player)">0</button>
+              <button class="dropdown-item" (click)="logWin('1', player)">1</button>
+              <button class="dropdown-item" (click)="logWin('2', player)">2</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-sm-12 text-center move-down">
+    <button *ngIf="!eventOver" type="button" class="btn btn-primary" (click)="nextRound()">Submit Round</button>
+    <button *ngIf="eventOver && !eventSubmitted" type="button" class="btn btn-primary" (click)="finishEvent()">Finish Event</button>
+  </div>
+  <div class="col-md-8 col-centered" *ngIf="eventSubmitted">
+    <h4 class="text-center">Results</h4>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let player of players; let i = index">
+        {{i + 1}}. {{player.name}} ({{player.setWins}} - {{player.losses}})
+        <span *ngIf="checkColors(player, 'W')" class="badge badge-light">White</span>
+        <span *ngIf="checkColors(player, 'U')" class="badge badge-primary">Blue</span>
+        <span *ngIf="checkColors(player, 'B')" class="badge badge-dark">Black</span>
+        <span *ngIf="checkColors(player, 'G')" class="badge badge-success">Green</span>
+        <span *ngIf="checkColors(player, 'R')" class="badge badge-danger">Red</span>
+      </li>
+    </ul>
+    <div class="text-center move-down">
+      <button *ngIf="eventSubmitted" type="button" class="btn btn-primary text-center" (click)="backToHome()">Back To Home</button>
+    </div>
+  </div>
+</div>
