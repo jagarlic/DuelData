@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { SwissComponent } from './swiss/swiss.component';
 import { RoundrobinComponent } from './roundrobin/roundrobin.component';
 import { player } from '../../player';
+import { NavComponent } from '../nav/nav.component'
 
 @Component({
   selector: 'app-event',
@@ -21,9 +22,18 @@ export class EventComponent implements OnInit {
   eventName: string;
   eventTypes: string[] = ["Swiss", "Round Robin"];
   selectedEventType: string = "Event Type";
+  selectedRoundCount : string = "# of Rounds";
 
   selectEventType(type) {
     this.selectedEventType = type;
+  }
+
+  selectRoundCount(count : any) {
+    this.selectedRoundCount = count;
+  }
+
+  makeArray(n: number): any[] {
+    return Array(n);
   }
 
   draftFormats: string[] = ["Dominaria", "M25", "RIX/RIX/IXL"];

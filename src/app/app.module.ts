@@ -22,6 +22,8 @@ import { RoundrobinComponent } from './elements/event/roundrobin/roundrobin.comp
 import { SwissComponent } from './elements/event/swiss/swiss.component';
 import { PasteventsComponent } from './elements/pastevents/pastevents.component';
 import { NavComponent } from './elements/nav/nav.component';
+import { ChartsModule } from 'ng2-charts';
+import { FormatStatsComponent } from './elements/format-stats/format-stats.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { NavComponent } from './elements/nav/nav.component';
     RoundrobinComponent,
     SwissComponent,
     PasteventsComponent,
-    NavComponent
+    NavComponent,
+    FormatStatsComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,8 @@ import { NavComponent } from './elements/nav/nav.component';
     AppRoutes,
     FormsModule,
     ReactiveFormsModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    ChartsModule
   ],
   providers: [AuthService, AuthGuard, AngularFirestore],
   bootstrap: [AppComponent]

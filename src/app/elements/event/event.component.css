@@ -24,3 +24,7 @@ li {
 .playerLogDiv {
     margin-top: 20px;
 }
+
+.roundCount {
+    max-width: 20px;
+}

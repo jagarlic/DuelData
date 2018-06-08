@@ -53,7 +53,7 @@ export class AuthService {
   }
 
   getUserData() {
-    console.log(typeof firebase.auth().currentUser);
+    // console.log(typeof firebase.auth().currentUser);
     return firebase.auth().currentUser;
   }
 

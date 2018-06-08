@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { EventComponent } from './elements/event/event.component';
 import { PasteventsComponent } from './elements/pastevents/pastevents.component';
+import { FormatStatsComponent } from './elements/format-stats/format-stats.component';
 
 const appRoutes: Routes = [
     {
@@ -13,7 +14,8 @@ const appRoutes: Routes = [
     {
         path: 'home',
         // canActivate: [AuthGuard],
-        component: HomeComponent
+        // component: HomeComponent
+        component: PasteventsComponent
     },
     {
         path: 'event',
@@ -23,6 +25,10 @@ const appRoutes: Routes = [
     {
         path: 'pastevents',
         component: PasteventsComponent
+    },
+    {
+        path: 'formatStats',
+        component: FormatStatsComponent
     }
 ];
 

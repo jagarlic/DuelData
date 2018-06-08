@@ -1,0 +1,25 @@
+<app-nav></app-nav>
+<div class="container">
+  <div class="row text-center" *ngIf="selectedFormat == 'Select Format'">
+    <div ngbDropdown class="d-inline-block">
+      <button class="btn btn-outline-primary" id="draftFormat" ngbDropdownToggle>{{selectedFormat}}</button>
+      <div ngbDropdownMenu aria-labelledby="draftFormat">
+        <button class="dropdown-item" *ngFor="let format of draftFormats" (click)="getDataForSet(format)">{{format}}</button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div *ngIf="singleChartData.length > 0">
+        <h3>Single Color Stats</h3>
+        <div class="card colorCard">
+          <div style="display: block">
+            <canvas baseChart [data]="singleChartData" [labels]="singleChartLabels" [options]="barChartOptions" [colors]="singleChartColors"
+              [chartType]="barChartType"></canvas>
+            <canvas id="bar-chart" width="800" height="450"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

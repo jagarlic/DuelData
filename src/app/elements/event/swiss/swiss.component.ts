@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { AuthService } from '../../../services/auth.service';
-import { EventsService } from'../../../services/events.service';
+import { EventsService } from '../../../services/events.service';
 
 @Component({
   selector: 'app-swiss',
@@ -16,6 +16,7 @@ export class SwissComponent implements OnInit {
   @Input() players: player[];
   @Input() eventName: string;
   @Input() setName: string;
+  @Input() roundCount: number;
 
   winCount: string = "Win Count";
   eventOver: boolean = false;
@@ -23,12 +24,16 @@ export class SwissComponent implements OnInit {
   evenPlayerCount: boolean = true;
   roundsPlayed: number = 1;
 
-  constructor(private router : Router, private auth : AuthService,
-  private eventService : EventsService) { }
+  constructor(private router: Router, private auth: AuthService,
+    private eventService: EventsService) { }
 
   pairTable: player[][] = [];
+  playedTable: number[][] = [];
 
   fillTable() {
+    for (let i = 0; i < this.players.length; i++) {
+      this.playedTable[i] = [];
+    }
     var row1: player[] = [];
     for (let i = 0; i < this.players.length / 2; i++) {
       row1.push(this.players[i]);
@@ -39,8 +44,10 @@ export class SwissComponent implements OnInit {
     }
     if (row1.length != row2.length) {
       this.evenPlayerCount = false;
-      let newPlayer: player = { name: 'Bye', index: 0, colors: '', setWins: 0, gameWins: 0, losses: 0, currentRoundCount: "Win Count" };
+      this.playedTable[this.players.length] = [];
+      let newPlayer: player = { name: 'Bye', index: this.players.length, colors: '', setWins: 0, gameWins: 0, losses: 0, currentRoundCount: "Win Count" };
       row2.push(newPlayer);
+      this.players.push(newPlayer);
     }
     this.pairTable.push(row1);
     this.pairTable.push(row2);
@@ -52,7 +59,7 @@ export class SwissComponent implements OnInit {
       this.players[p.index].setWins--;
       this.players[p.index].gameWins -= 2;
     }
-    if (this.players[p.index].currentRoundCount == "1") {
+    if (this.players[p.index].currentRoundCount == "1" || this.players[p.index].currentRoundCount == "0") {
       this.players[p.index].currentRoundCount = "";
       this.players[p.index].gameWins--;
       this.players[p.index].losses--;
@@ -68,10 +75,12 @@ export class SwissComponent implements OnInit {
   }
 
   nextRound() {
-    if ((this.evenPlayerCount == true && this.roundsPlayed >= this.players.length - 1) || 
-    (this.evenPlayerCount == false && this.roundsPlayed >= this.players.length)) {
+    if (this.roundsPlayed >= this.roundCount) {
       this.eventOver = true;
     } else {
+      if (!this.evenPlayerCount && this.roundsPlayed % 2 == 1) {
+        this.players[this.players.length - 1].setWins++;
+      }
       this.roundsPlayed++;
       this.rotateMatrix(this.pairTable);
       for (let player of this.players) {
@@ -83,29 +92,92 @@ export class SwissComponent implements OnInit {
   rotateMatrix(matrix) {
     var n = matrix.length;
     let rotated = JSON.parse(JSON.stringify(matrix));
+    console.log(this.playedTable);
 
-    for (let i = 0; i < 2; i++) {
-      var n = matrix[0].length;
-      for (let j = 0; j < n; j++) {
-        if (i == 0 && j == 0) {
-          rotated[i][j] = matrix[i][j];
-        } else if (i == 0 && j == 1) {
-          rotated[i][j] = matrix[j][i];
-        } else if (i == 0) {
-          rotated[i][j] = matrix[i][j - 1]
-        } else if (i == 1 && j == n - 1) {
-          rotated[i][j] = matrix[0][j];
-        } else if (i == 1) {
-          rotated[i][j] = matrix[i][j + 1];
+    for (let i = 0; i < this.pairTable[0].length; i++) {
+      let currTop = this.pairTable[0][i];
+      let currBottom = this.pairTable[1][i];
+      this.playedTable[currTop.index].push(currBottom.index);
+      this.playedTable[currBottom.index].push(currTop.index);
+    }
+
+    this.players.sort(function (p1, p2) {
+      if (p1.setWins < p2.setWins) {
+        return 1;
+      } else if (p1.setWins > p2.setWins) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+
+    let pairedPlayers: number[] = [];
+    let currPairIndex: number = 0;
+    for (let i = 0; i < this.players.length; i++) {
+      let player1 = this.players[i];
+      if (pairedPlayers.indexOf(player1.index) < 0) {
+        for (let j = 0; j < this.players.length; j++) {
+          let player2 = this.players[j];
+          if (player2.index != player1.index && !this.hasPlayed(player1.index, player2.index) &&
+            pairedPlayers.indexOf(player2.index) < 0) {
+            rotated[0][currPairIndex] = player1;
+            rotated[1][currPairIndex] = player2;
+            pairedPlayers.push(player1.index);
+            pairedPlayers.push(player2.index);
+            currPairIndex++;
+            j = this.players.length;
+          }
         }
       }
+      if (i == this.players.length - 1 && pairedPlayers.length != this.players.length) {
+        this.players = this.shuffle(this.players);
+        console.log(this.players);
+        pairedPlayers = [];
+        console.log(pairedPlayers);
+        i = 0;
+        currPairIndex = 0;
+        rotated = JSON.parse(JSON.stringify(matrix));
+      }
     }
+
+    this.players.sort(function (p1, p2) {
+      if (p1.index > p2.index) {
+        return 1;
+      } else if (p1.index < p2.index) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+
     this.pairTable = rotated;
+  }
+
+  shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * (i + 1));
+      x = a[i];
+      a[i] = a[j];
+      a[j] = x;
+    }
+    return a;
+  }
+
+  hasPlayed(p1, p2) {
+    if (this.playedTable[p1].indexOf(p2) > -1) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   finishEvent() {
     this.eventSubmitted = true;
-    this.players.sort(function(p1, p2) {
+    if (!this.evenPlayerCount) {
+      this.players.splice(this.players.length - 1, 1);
+    }
+    this.players.sort(function (p1, p2) {
       if (p1.setWins < p2.setWins) {
         return 1;
       } else if (p1.setWins > p2.setWins) {
@@ -120,7 +192,7 @@ export class SwissComponent implements OnInit {
 
   checkColors(player, color) {
     let colors = player.colors;
-    var regex = new RegExp( color, 'g' );
+    var regex = new RegExp(color, 'g');
     if (colors.search(regex) != '-1') {
       return true;
     } else {

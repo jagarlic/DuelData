@@ -1,3 +1,4 @@
+<app-nav></app-nav>
 <div class="container">
   <div class="eventForm" *ngIf="!validated">
     <h3 align="center">New Event</h3>
@@ -20,6 +21,10 @@
             <button class="dropdown-item" *ngFor="let type of eventTypes" (click)="selectEventType(type)">{{type}}</button>
           </div>
         </div>
+        <span class="roundCount text-center">
+          <input class="form-control" *ngIf="selectedEventType == 'Swiss'" #roundCount (keyup)="selectRoundCount(roundCount.value)"
+            (blur)="selectRoundCount(roundCount.value)" placeholder="# of Rounds">
+        </span>
       </div>
       <div class="col-sm-12 col-md-3 text-center">
         <div ngbDropdown class="d-inline-block">
@@ -61,7 +66,7 @@
       </ul>
     </div>
   </div>
-  <app-swiss *ngIf="selectedEventType == 'Swiss' && validated" [players]="players"></app-swiss>
-  <app-roundrobin *ngIf="selectedEventType == 'Round Robin' && validated" 
-  [players]="players" [eventName]="eventName" [setName]="selectedDraftFormat"></app-roundrobin>
+  <app-swiss *ngIf="selectedEventType == 'Swiss' && validated" [players]="players" [eventName]="eventName" [setName]="selectedDraftFormat"
+  [roundCount]="selectedRoundCount"></app-swiss>
+  <app-roundrobin *ngIf="selectedEventType == 'Round Robin' && validated" [players]="players" [eventName]="eventName" [setName]="selectedDraftFormat"></app-roundrobin>
 </div>

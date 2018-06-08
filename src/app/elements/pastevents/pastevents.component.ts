@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import * as firebase from 'firebase/app';
 import { Observable, of } from 'rxjs';
 import { Event } from '../../event';
@@ -15,28 +14,32 @@ import { NavComponent } from '../nav/nav.component';
 })
 export class PasteventsComponent implements OnInit {
 
-  events : Observable<any>;
-  
+  events: Observable<any>;
+  uid;
+  eventsLoaded: boolean = false;
+
 
   constructor(private auth: AuthService, private database: AngularFireDatabase) {
-    let uid = this.auth.getUserData().uid;
-    this.events = this.database.list('/events/' + uid).valueChanges();
-    console.log(this.events);
-    // this.database.object('/events/' + uid).valueChanges().subscribe(
-    //   events => {
-    //     this.events = events;
-    //     console.log(events);
-    //   }
-    // );
   }
 
   ngOnInit() {
-    this.retrieveEvents()
+    // this.uid = this.route.snapshot.data['userUid'];
+    console.log("NG Called")
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.uid = user.uid;
+        this.events = this.database.list('/events/' + this.uid).valueChanges();
+        this.eventsLoaded = true;
+        console.log(this.events);
+      } else {
+        console.log("No one is logged in");
+      }
+    });
   }
 
   checkColors(player, color) {
     let colors = player.colors;
-    var regex = new RegExp( color, 'g' );
+    var regex = new RegExp(color, 'g');
     if (colors.search(regex) != '-1') {
       return true;
     } else {

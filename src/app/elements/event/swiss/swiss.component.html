@@ -1,10 +1,10 @@
-<h3 class="text-center">Round Robin Event</h3>
+<h3 class="text-center">{{eventName}}</h3>
 <div class="row">
   <div class="col-md-6 col-centered" *ngIf="!eventSubmitted">
     <div class="card rrCard">
       <ul class="list-group">
         <li class="list-group-item text-center" *ngFor="let player of pairTable[1]; let i = index">
-          ({{pairTable[0][i].setWins}} - {{pairTable[0][i].losses}}) {{pairTable[0][i].name}}
+          <span class="winLoss" *ngIf="pairTable[0][i].name != 'Bye'">({{pairTable[0][i].setWins}} - {{pairTable[0][i].losses}})</span> {{pairTable[0][i].name}}
           <div *ngIf="player.name != 'Bye' && pairTable[0][i].name != 'Bye'" ngbDropdown class="d-inline-block dropdownRight">
             <button class="btn btn-outline-primary" id="eventType" ngbDropdownToggle>{{pairTable[0][i].currentRoundCount}}</button>
             <div ngbDropdownMenu aria-labelledby="eventType">
@@ -14,7 +14,7 @@
             </div>
           </div>
           <span class="vs">VS</span>
-          {{player.name}} ({{player.setWins}} - {{player.losses}})
+          {{player.name}} <span class="winLoss" *ngIf="player.name != 'Bye'">({{player.setWins}} - {{player.losses}})</span>
           <div *ngIf="player.name != 'Bye' && pairTable[0][i].name != 'Bye'" ngbDropdown class="d-inline-block dropdownLeft">
             <button class="btn btn-outline-primary" id="eventType" ngbDropdownToggle>{{player.currentRoundCount}}</button>
             <div ngbDropdownMenu aria-labelledby="eventType">
