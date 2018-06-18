@@ -53,7 +53,7 @@ export class RoundrobinComponent implements OnInit {
       this.players[p.index].setWins--;
       this.players[p.index].gameWins -= 2;
     }
-    if (this.players[p.index].currentRoundCount == "1") {
+    if (this.players[p.index].currentRoundCount == "1" || this.players[p.index].currentRoundCount == "0") {
       this.players[p.index].currentRoundCount = "";
       this.players[p.index].gameWins--;
       this.players[p.index].losses--;

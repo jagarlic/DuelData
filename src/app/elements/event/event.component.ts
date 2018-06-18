@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
@@ -16,13 +16,26 @@ import { NavComponent } from '../nav/nav.component'
 
 export class EventComponent implements OnInit {
 
-  constructor(private router : Router, private authService : AuthService) {
+  eventName: string;
+  eventTypes: string[];
+  selectedEventType: string;
+  selectedRoundCount : string;
+
+  formatEventValidationAlert : string;
+  playerValidationAlert : string;
+  playerCountValidationAlert : string;
+  validated = false;
+
+  constructor(private router : Router, private authService : AuthService, private cdRef: ChangeDetectorRef) {
   }
 
-  eventName: string;
-  eventTypes: string[] = ["Swiss", "Round Robin"];
-  selectedEventType: string = "Event Type";
-  selectedRoundCount : string = "# of Rounds";
+  loadData() {
+    this.eventTypes = ["Swiss", "Round Robin"];
+    this.selectedEventType = "Event Type";
+    this.selectedRoundCount = "# of Rounds";
+    this.cdRef.detectChanges();
+    console.log("changes detected");
+  }
 
   selectEventType(type) {
     this.selectedEventType = type;
@@ -36,8 +49,8 @@ export class EventComponent implements OnInit {
     return Array(n);
   }
 
-  draftFormats: string[] = ["Dominaria", "M25", "RIX/RIX/IXL"];
-  selectedDraftFormat: string = "Draft Format";
+  draftFormats: string[] = ["Standard", "Modern", "Legacy", "Dominaria", "M25", "RIX-IXL", "AMK-H0U", "AER-KLD", "Other"];
+  selectedDraftFormat: string = "Format";
 
   selectDraftFormat(format) {
     this.selectedDraftFormat = format;
@@ -49,14 +62,20 @@ export class EventComponent implements OnInit {
 
   playerCountLog(count: any) { // without type info
     count = Number(count)
-    if (typeof count == "number") {
+    console.log(count)
+    if (isNaN(count)) {
+      this.playerCountValidationAlert = "Number of players must be a number.";
+    } else if (count > 40) {
+      this.playerCountValidationAlert = "Number of players cannot exceed 40.";
+    } else {
+      this.playerCountValidationAlert = null;
       this.playerCount = count;
-    }
-    this.players = Array(this.playerCount);
-    for (let p = 0; p < count; p++) {
-      let newPlayer : player = {name : '', index : 0, colors : '', setWins: 0, gameWins : 0, losses : 0, currentRoundCount : "Win Count"};
-      newPlayer.index = p;
-      this.players[p] = newPlayer;
+      this.players = Array(this.playerCount);
+      for (let p = 0; p < count; p++) {
+        let newPlayer : player = {name : '', index : 0, colors : '', setWins: 0, gameWins : 0, losses : 0, currentRoundCount : "Win Count"};
+        newPlayer.index = p;
+        this.players[p] = newPlayer;
+      }
     }
   }
 
@@ -76,23 +95,19 @@ export class EventComponent implements OnInit {
     this.players[player.index].name = name;
   }
 
-  formatEventValidationAlert : string;
-  playerValidationAlert : string;
-  validated = false;
-
   createEvent() {
     console.log(this.eventName);
     let checkValidation = true;
-    if (this.selectedDraftFormat == "Draft Format" || this.selectedEventType == "Event Type") {
+    if (this.selectedDraftFormat == "Format" || this.selectedEventType == "Event Type") {
       checkValidation = false;
-      this.formatEventValidationAlert = "Draft format or event type not selected";
+      this.formatEventValidationAlert = "Format or event type not selected";
     }
     let playerIndices = "";
     for (let p in this.players) {
-      if (this.players[p].colors == "" || this.players[p].name == "") {
+      if (this.players[p].name == "") {
         let playerIndex = Number(p) + 1
         playerIndices += String(playerIndex) + " ";
-        this.playerValidationAlert = "Player(s) " + playerIndices + " missing name or colors.";
+        this.playerValidationAlert = "Player(s) " + playerIndices + " missing name.";
         checkValidation = false;
       }
     }
@@ -104,9 +119,8 @@ export class EventComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.authService.getUserData());
-
-    // this.selectedEventType = "Event Type";
+    this.loadData();
+    // this.cdRef.detectChanges();s
   }
 
 }

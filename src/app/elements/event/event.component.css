@@ -28,3 +28,23 @@ li {
 .roundCount {
     max-width: 20px;
 }
+
+.eventFormItem {
+    margin-top: 15px;
+}
+
+.playerText {
+    display: block;
+    margin: 0 auto;
+    max-width: 400px;
+}
+
+p {
+    color: white;
+}
+
+.help {
+    max-width: 500px;
+    display: block;
+    margin: 0 auto;
+}

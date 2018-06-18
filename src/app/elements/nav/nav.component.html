@@ -1,23 +1,26 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
-    <a class="navbar-brand" (click)="currentURL == '/home' || toHome()">Limited Log</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+    <a class="navbar-brand" (click)="currentURL == '/home' || toHome()">
+      <img [src]="'assets/images/logo.PNG'" style="height:30px; width:30px;">
+      DuelData
+    </a>
+    <button *ngIf="currentURL != '/'" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
       aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" *ngIf="currentURL != '/'">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item" *ngIf="currentURL != '/event'">
           <a class="nav-link" (click)="newEvent()"> 
-            <i style="font-size:1em; color:Tomato; padding-bottom:10px;" class="fas fa-calendar"></i>
+            <i style="font-size:1em; color:deepskyblue; padding-bottom:10px;" class="fas fa-calendar"></i>
             New Event
-            <!-- <span class="sr-only">(current)</span> -->
+            <span class="sr-only">(current)</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)="toFormatStats()">
-            <i style="font-size:1em; color:Tomato; padding-bottom:10px;" class="fas fa-chart-bar"></i>
+          <a class="nav-link" *ngIf="currentURL != '/formatStats'" (click)="toFormatStats()">
+            <i style="font-size:1em; color:deepskyblue; padding-bottom:10px;" class="fas fa-chart-bar"></i>
             Format Statistics
           </a>
         </li>

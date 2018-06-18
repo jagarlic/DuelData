@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container text-center">
   <ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
       <h4 class="modal-title">Sign Up</h4>
@@ -8,22 +8,33 @@
     </div>
     <div class="modal-body">
       <!-- <p>One fine body&hellip;</p> -->
-      <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
-        <h3 align="center">Login Form</h3>
-        <input class="form-control" formControlName="firstname" placeholder="First Name">
-        <input class="form-control" formControlName="lastname" placeholder="Last Name">
-        <input class="form-control" formControlName="email" placeholder="Email">
-        <input class="form-control" formControlName="password" placeholder="Password">
-        <input class="form-control" formControlName="passConfirm" placeholder="Confirm Password">
-        <button class="form-control" type="submit" class="btn btn-success">Submit</button>
+      <form [formGroup]="signUpForm">
+        <div class="form-group">
+          <label for="firstName">First Name:</label>
+          <input id="firstName" class="form-control" required formControlName="firstname" placeholder="First Name">
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name:</label>
+          <input class="form-control" id="lastName" required formControlName="lastname" placeholder="Last Name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input class="form-control" id="email" required type="email" formControlName="email" placeholder="Email">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email or contact you.</small>
+        </div>
+        <div class="form-group">
+          <label for="pass">Password:</label>
+          <input class="form-control" required type="password" formControlName="password" placeholder="Password">
+        </div>
+        <div class="form-group">
+          <label for="confirm">Confirm:</label>
+          <input class="form-control" id="confirm" required type="password" formControlName="passConfirm" placeholder="Confirm Password">
+        </div>
+        <button class="form-control" type="submit" class="btn btn-success" (click)="c('Submit')">Sign Up</button>
       </form>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
     </div>
   </ng-template>
 
-  <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Sign Up</button>
+  <button class="btn btn-lg btn-primary" (click)="open(content)" style="background-color: deepskyblue; border:none">Sign Up</button>
 
-  <hr>
 </div>

@@ -44,12 +44,15 @@ export class AuthService {
   }
 
   isLoggedIn() {
-    let loggedIn = false;
-    if (firebase.auth().currentUser != null) {
-      return true;
-    } else {
-      return false;
-    }
+    var checkSub = firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        // this.loggedIn = true;
+      } else {
+        // this.loggedIn = false;
+      }
+    });
+    return checkSub;
+    // return firebase.auth().currentUser;
   }
 
   getUserData() {
@@ -63,10 +66,13 @@ export class AuthService {
   }
 
   signUp(email, password, name) {
-    this._firebaseAuth.auth.createUserWithEmailAndPassword(email, password).catch(function(error) {
+    this._firebaseAuth.auth.createUserWithEmailAndPassword(email, password).then(function() {
+      
+    }).catch(function (error) {
       var errorCode = error.code;
       var errorMessage = error.message;
+      console.log(errorMessage);
     });
-    return this._firebaseAuth.auth.signInWithEmailAndPassword(email, password)
+    return this._firebaseAuth.auth.signInWithEmailAndPassword(email, password);
   }
 }

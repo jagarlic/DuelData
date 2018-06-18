@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
@@ -11,7 +11,7 @@ export class NavComponent implements OnInit {
 
   currentURL : string;
 
-  constructor(private router: Router, private authService :AuthService) {
+  constructor(private router: Router, private authService :AuthService, private ngZone : NgZone) {
     this.currentURL = this.router.url;
     console.log(this.currentURL);
   }
@@ -20,7 +20,7 @@ export class NavComponent implements OnInit {
   }
 
   newEvent() {
-    this.router.navigate(['event']);
+    this.ngZone.run(() => this.router.navigate(['event']));
   }
 
   toHome() {
@@ -28,7 +28,11 @@ export class NavComponent implements OnInit {
   }
 
   toFormatStats() {
-    this.router.navigate(['formatStats']);
+    this.ngZone.run(() => this.router.navigate(['formatStats']));
+  }
+
+  toPastEvents() {
+    this.ngZone.run(() => this.router.navigate(['pastevents']));
   }
 
   signOut() {

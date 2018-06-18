@@ -1,23 +1,53 @@
 <app-nav></app-nav>
 <div class="container">
-  <div class="row text-center" *ngIf="selectedFormat == 'Select Format'">
-    <div ngbDropdown class="d-inline-block">
-      <button class="btn btn-outline-primary" id="draftFormat" ngbDropdownToggle>{{selectedFormat}}</button>
-      <div ngbDropdownMenu aria-labelledby="draftFormat">
-        <button class="dropdown-item" *ngFor="let format of draftFormats" (click)="getDataForSet(format)">{{format}}</button>
+  <div class="row">
+    <div class="col-md-12 center-block text-center">
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn btn-light" id="draftFormat" ngbDropdownToggle>{{selectedFormat}}</button>
+        <div ngbDropdownMenu aria-labelledby="draftFormat">
+          <button class="dropdown-item" *ngFor="let format of draftFormats" (click)="getDataForSet(format)">{{format}}</button>
+        </div>
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div *ngIf="singleChartData.length > 0">
-        <h3>Single Color Stats</h3>
-        <div class="card colorCard">
+  <div *ngIf="singleChartData[0].data.length > 0">
+    <h2 class="text-center move-down">{{selectedFormat}}</h2>
+    <h3 class="text-center move-down">Single Color</h3>
+    <div class="row singleColor">
+      <div class="col-md-6">
+        <h5>Single Color Win %</h5>
+        <div class="colorCard">
           <div style="display: block">
-            <canvas baseChart [data]="singleChartData" [labels]="singleChartLabels" [options]="barChartOptions" [colors]="singleChartColors"
-              [chartType]="barChartType"></canvas>
+            <canvas baseChart [datasets]="singleChartData" [labels]="singleChartLabels" [options]="barChartOptions" [colors]="singleChartColors"
+              [chartType]="'bar'"></canvas>
             <canvas id="bar-chart" width="800" height="450"></canvas>
           </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h5>Single Color Use Rate</h5>
+        <div style="display: block">
+          <canvas baseChart [options]="pieChartOptions" [data]="singlePieChartData" [labels]="singleChartLabels" [chartType]="'pie'" [colors]="singleChartColors"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="dualChartData[0].data.length > 0" class="dualColor move-up">
+    <h3 class="text-center move-down">Two Color Decks</h3>
+    <div class="row dualColor">
+      <div class="col-md-6">
+        <h5>Two Color Win %</h5>
+        <div class="colorCard">
+          <div style="display: block">
+            <canvas baseChart [datasets]="dualChartData" [labels]="dualChartLabels" [options]="barChartOptions" [chartType]="'bar'" [colors]="dualChartColors"></canvas>
+            <canvas id="bar-chart" width="800" height="450"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h5>Two Color Use Rate</h5>
+        <div style="display: block">
+          <canvas baseChart [data]="dualPieChartData" [options]="pieChartOptions" [labels]="dualChartLabels" [chartType]="'pie'" [colors]="dualChartColors"></canvas>
         </div>
       </div>
     </div>

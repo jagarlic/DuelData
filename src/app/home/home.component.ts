@@ -29,4 +29,8 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['pastevents']);
   }
 
+  toFormatStats() {
+    this.router.navigate(['pastevents']);
+  }
+
 }

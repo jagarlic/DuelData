@@ -1,45 +1,61 @@
-<div class="main__body text-center">
+<app-nav></app-nav>
+<section>
   <div class="container">
-
-    <div class="login__page">
-      <div class="row">
-        <div class="card col-md-4 col-lg-4">
-          <div class="login__card">
-            <div class="card-block">
-
-              <!-- <button type="button" id="signUpBtn" class="btn btn-block" (click)="">Sign Up</button> -->
-              <!-- <app-sign-up-modal></app-sign-up-modal> -->
-
-              <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-                <h3 align="center">Login</h3>
-                <input class="form-control" formControlName="email" placeholder="Email">
-                <input class="form-control" formControlName="password" placeholder="Password">
-                <!-- <button type="submit" class="btn btn-success">Submit</button> -->
-                <div>
-                  <button type="buton" class="btn btn-primary btn-block" style="margin-bottom: 20px" (click)="signInWithEmail()">
-                    Login with Email
-                  </button>
-                </div>
-
-                <div>
-                  <button type="button" class="btn btn-block" (click)="signInWithGoogle()">
-                    <i class="fa fa-google" aria-hidden="true"></i>
-                    Login with Google
-                  </button>
-                </div>
-
-                <hr>
-                <app-sign-up-modal></app-sign-up-modal>
-
-              </form>
-
+    <div class="flex-container text-center">
+      <div class="card flex-item move-down">
+        <div class="card-body">
+          <form [formGroup]="userForm" class="move-down">
+            <h2>Sign In</h2>
+            <input class="form-control" formControlName="email" placeholder="Email">
+            <input class="form-control" type="password" formControlName="password" placeholder="Password">
+            <div>
+              <button type="buton" class="btn btn-primary btn-block" style="margin-bottom: 20px; background-color: deepskyblue; border:none"
+                (click)="signInWithEmail()">
+                Login with Email
+              </button>
             </div>
-          </div>
+            <div *ngIf="this.invalidSignIn">
+              <ngb-alert type="danger" [dismissible]="false">Invalid email or password.</ngb-alert>
+            </div>
+            <div>
+              <button type="button" class="btn btn-block" (click)="signInWithGoogle()">
+                <i class="fab fa-google" style="color: deepskyblue"></i>
+                Login with Google
+              </button>
+            </div>
+            <hr>
+            <app-sign-up-modal></app-sign-up-modal>
+          </form>
         </div>
       </div>
     </div>
-    <!-- end card -->
-
   </div>
-  <!-- end container -->
-</div>
+</section>
+<section class="info">
+  <div class="container">
+    <h2 class="text-center about">What is DuelData?</h2>
+    <div class="flex-container">
+      <div class="move-down flex-item card img-card">
+        <img class="card-img-top" [src]="'assets/images/Draft.PNG'" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Record Drafts</h4>
+          <p class="card-text">Log round robin or swiss style drafts with our easy to use event creator.</p>
+        </div>
+      </div>
+      <div class="move-down flex-item card img-card">
+        <img class="card-img-top" [src]="'assets/images/Stats.PNG'" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">View Deck Statistics</h4>
+          <p class="card-text">For each draft format, view win/loss ratios and play frequencies of all color pairings</p>
+        </div>
+      </div>
+      <div class="move-down flex-item card img-card">
+        <img class="card-img-top" [src]="'assets/images/Draft.PNG'" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Keep a Log of Your Drafts</h4>
+          <p class="card-text">Log round robin or swiss style drafts with our easy to use event creator.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

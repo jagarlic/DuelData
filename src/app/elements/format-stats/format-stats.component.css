@@ -1,4 +1,15 @@
 .colorCard {
-    height: 400px;
-    width: 800px;
+    width: 100%;
+}
+
+#bar-chart {
+    display: none;
+}
+
+.singleColor {
+    margin-top: 30px;
+}
+
+.dualColor {
+    margin-top: 40px;
 }

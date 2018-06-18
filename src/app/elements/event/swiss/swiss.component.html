@@ -4,25 +4,34 @@
     <div class="card rrCard">
       <ul class="list-group">
         <li class="list-group-item text-center" *ngFor="let player of pairTable[1]; let i = index">
-          <span class="winLoss" *ngIf="pairTable[0][i].name != 'Bye'">({{pairTable[0][i].setWins}} - {{pairTable[0][i].losses}})</span> {{pairTable[0][i].name}}
-          <div *ngIf="player.name != 'Bye' && pairTable[0][i].name != 'Bye'" ngbDropdown class="d-inline-block dropdownRight">
-            <button class="btn btn-outline-primary" id="eventType" ngbDropdownToggle>{{pairTable[0][i].currentRoundCount}}</button>
-            <div ngbDropdownMenu aria-labelledby="eventType">
-              <button class="dropdown-item" (click)="logWin('0', pairTable[0][i])">0</button>
-              <button class="dropdown-item" (click)="logWin('1', pairTable[0][i])">1</button>
-              <button class="dropdown-item" (click)="logWin('2', pairTable[0][i])">2</button>
+          <span class="playerSpacer">
+            <span class="winLoss" *ngIf="pairTable[0][i].name != 'Bye'">({{pairTable[0][i].setWins}} - {{pairTable[0][i].losses}})</span> {{pairTable[0][i].name}}
+          </span>
+          <span class="playerSpacer">
+            <div *ngIf="player.name != 'Bye' && pairTable[0][i].name != 'Bye'" ngbDropdown class="d-inline-block dropdownRight">
+              <button class="btn btn-outline-primary" id="eventType" ngbDropdownToggle>{{pairTable[0][i].currentRoundCount}}</button>
+              <div ngbDropdownMenu aria-labelledby="eventType">
+                <button class="dropdown-item" (click)="logWin('0', pairTable[0][i])">0</button>
+                <button class="dropdown-item" (click)="logWin('1', pairTable[0][i])">1</button>
+                <button class="dropdown-item" (click)="logWin('2', pairTable[0][i])">2</button>
+              </div>
             </div>
-          </div>
+          </span>
           <span class="vs">VS</span>
-          {{player.name}} <span class="winLoss" *ngIf="player.name != 'Bye'">({{player.setWins}} - {{player.losses}})</span>
-          <div *ngIf="player.name != 'Bye' && pairTable[0][i].name != 'Bye'" ngbDropdown class="d-inline-block dropdownLeft">
-            <button class="btn btn-outline-primary" id="eventType" ngbDropdownToggle>{{player.currentRoundCount}}</button>
-            <div ngbDropdownMenu aria-labelledby="eventType">
-              <button class="dropdown-item" (click)="logWin('0', player)">0</button>
-              <button class="dropdown-item" (click)="logWin('1', player)">1</button>
-              <button class="dropdown-item" (click)="logWin('2', player)">2</button>
+          <span class="playerSpacer">
+            {{player.name}}
+            <span class="winLoss" *ngIf="player.name != 'Bye'">({{player.setWins}} - {{player.losses}})</span>
+          </span>
+          <span class="playerSpacer">
+            <div *ngIf="player.name != 'Bye' && pairTable[0][i].name != 'Bye'" ngbDropdown class="d-inline-block dropdownLeft">
+              <button class="btn btn-outline-primary" id="eventType" ngbDropdownToggle>{{player.currentRoundCount}}</button>
+              <div ngbDropdownMenu aria-labelledby="eventType">
+                <button class="dropdown-item" (click)="logWin('0', player)">0</button>
+                <button class="dropdown-item" (click)="logWin('1', player)">1</button>
+                <button class="dropdown-item" (click)="logWin('2', player)">2</button>
+              </div>
             </div>
-          </div>
+          </span>
         </li>
       </ul>
     </div>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators, FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-sign-up-modal',
@@ -29,36 +29,43 @@ export class SignUpModalComponent implements OnInit {
 
   open(content) {
     this.modalService.open(content).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
+      if (result == "Submit") {
+        this.signUpWithEmail();
+      }
+      // this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
 
-  signUnWithEmail() {
+  signUpWithEmail() {
     if (this.signUpForm.get('password').value == this.signUpForm.get('passConfirm').value) {
       this.authService.signUp(this.signUpForm.get('email').value, this.signUpForm.get('password').value, 
-      this.signUpForm.get('firstname').value + this.signUpForm.get('lastname').value)
-      .then((res) => {
-        console.log(res);
-        this.router.navigate(['home']);
+      this.signUpForm.get('firstname').value + " " + this.signUpForm.get('lastname').value).then(() => {
+        this.updateUserInfo(this.signUpForm.get('firstname') + " " + this.signUpForm.get('lastname'));
+        // this.authService.getUserData().updateProfile({
+        //   displayName: this.signUpForm.get('firstname').value  + " " + this.signUpForm.get('lastname').value,
+        //   photoURL : ""
+        // })
       })
-      .catch((err) => console.log('error: ' + err));
+      .catch((err) => {
+        this.updateUserInfo(this.signUpForm.get('firstname') + " " + this.signUpForm.get('lastname'));
+        console.log('error: ' + err)
+      });
+      this.router.navigate(['home']);
     }
   }
 
-  onSubmit() {
-    this.signUnWithEmail();
+  updateUserInfo(name) {
+    console.log("updating")
+    this.authService.getUserData().updateProfile({
+        displayName: name,
+        photoURL : ""
+      })
   }
 
-  // private getDismissReason(reason: any): string {
-  //   if (reason === ModalDismissReasons.ESC) {
-  //     return 'by pressing ESC';
-  //   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-  //     return 'by clicking on a backdrop';
-  //   } else {
-  //     return  `with: ${reason}`;
-  //   }
-  // }
+  onSubmit() {
+    this.signUpWithEmail();
+  }
 
 }

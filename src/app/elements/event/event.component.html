@@ -1,7 +1,17 @@
 <app-nav></app-nav>
-<div class="container">
+<div class="container" *ngIf="eventTypes">
+  <ngb-alert type="danger" (close)="playerCountValidationAlert = null" *ngIf="playerCountValidationAlert">
+    {{ playerCountValidationAlert }}
+  </ngb-alert>
   <div class="eventForm" *ngIf="!validated">
     <h3 align="center">New Event</h3>
+    <div class="help text-center">
+      <p>
+        To start a new event, choose an event name, tournament style, and format. Then input how many players will be participating
+        and their respective name and colors they will be playing. Color fields are not mandatory but are very helpful for getting
+        data on various formats!
+      </p>
+    </div>
     <p>
       <ngb-alert type="danger" (close)="formatEventValidationAlert = null" *ngIf="formatEventValidationAlert">
         {{ formatEventValidationAlert }}
@@ -11,30 +21,30 @@
       </ngb-alert>
     </p>
     <div class="row">
-      <div class="col-sm-12 col-md-3">
+      <div class="col-sm-12 col-md-3 eventFormItem">
         <input class="form-control" #eventName (blur)="logEventName(eventName.value)" placeholder="Event Name">
       </div>
-      <div class="col-sm-12 col-md-3 text-center">
+      <div class="col-sm-12 col-md-3 text-center eventFormItem">
         <div ngbDropdown class="d-inline-block">
-          <button class="btn btn-outline-primary" id="eventType" ngbDropdownToggle>{{selectedEventType}}</button>
+          <button class="btn btn-light" id="eventType" ngbDropdownToggle>{{selectedEventType}}</button>
           <div ngbDropdownMenu aria-labelledby="eventType">
             <button class="dropdown-item" *ngFor="let type of eventTypes" (click)="selectEventType(type)">{{type}}</button>
           </div>
         </div>
-        <span class="roundCount text-center">
+        <span class="roundCount text-center eventFormItem">
           <input class="form-control" *ngIf="selectedEventType == 'Swiss'" #roundCount (keyup)="selectRoundCount(roundCount.value)"
             (blur)="selectRoundCount(roundCount.value)" placeholder="# of Rounds">
         </span>
       </div>
-      <div class="col-sm-12 col-md-3 text-center">
+      <div class="col-sm-12 col-md-3 text-center eventFormItem">
         <div ngbDropdown class="d-inline-block">
-          <button class="btn btn-outline-primary" id="draftFormat" ngbDropdownToggle>{{selectedDraftFormat}}</button>
+          <button class="btn btn-light" id="draftFormat" ngbDropdownToggle>{{selectedDraftFormat}}</button>
           <div ngbDropdownMenu aria-labelledby="draftFormat">
             <button class="dropdown-item" *ngFor="let format of draftFormats" (click)="selectDraftFormat(format)">{{format}}</button>
           </div>
         </div>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-sm-12 col-md-3 eventFormItem">
         <input class="form-control" #playerCount (keyup)="playerCountLog(playerCount.value)" (blur)="playerCountLog(playerCount.value)"
           placeholder="Number of Players">
       </div>
@@ -43,7 +53,8 @@
     <div class="text-center playerLogDiv">
       <ul style="padding-left: 0">
         <li *ngFor="let player of players">
-          <input class="form-control" #playerName (blur)="playerNameLog(player, playerName.value)" placeholder="Player Name" required>
+          <input class="form-control playerText" #playerName (blur)="playerNameLog(player, playerName.value)" placeholder="Player Name"
+            required>
           <div class="btn-group text-center btn-group-toggle">
             <label class="btn-light colorBtn" ngbButtonLabel>
               <input type="checkbox" (click)="addColorToPlayer(player, 'W')" ngbButton> White
@@ -67,6 +78,6 @@
     </div>
   </div>
   <app-swiss *ngIf="selectedEventType == 'Swiss' && validated" [players]="players" [eventName]="eventName" [setName]="selectedDraftFormat"
-  [roundCount]="selectedRoundCount"></app-swiss>
+    [roundCount]="selectedRoundCount"></app-swiss>
   <app-roundrobin *ngIf="selectedEventType == 'Round Robin' && validated" [players]="players" [eventName]="eventName" [setName]="selectedDraftFormat"></app-roundrobin>
 </div>

@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { EventComponent } from './elements/event/event.component';
 import { PasteventsComponent } from './elements/pastevents/pastevents.component';
 import { FormatStatsComponent } from './elements/format-stats/format-stats.component';
+import { AuthGuard } from './services/auth-guard.service';
 
 const appRoutes: Routes = [
     {
@@ -13,23 +14,23 @@ const appRoutes: Routes = [
     },
     {
         path: 'home',
-        // canActivate: [AuthGuard],
-        // component: HomeComponent
+        canActivate: [AuthGuard],
         component: PasteventsComponent
     },
     {
         path: 'event',
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         component: EventComponent
-    }, 
-    {
-        path: 'pastevents',
-        component: PasteventsComponent
     },
     {
         path: 'formatStats',
+        canActivate: [AuthGuard],
         component: FormatStatsComponent
     }
+    // {
+    //     path: 'home',
+    //     component: HomeComponent
+    // }
 ];
 
 export const AppRoutes = RouterModule.forRoot(appRoutes);

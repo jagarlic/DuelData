@@ -5,7 +5,6 @@ import { ReactiveFormsModule, FormControl, FormGroup, FormBuilder, Validators } 
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 
-
 // import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -14,6 +13,8 @@ import * as firebase from 'firebase/app';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+
+  invalidSignIn = false;
 
   userForm = new FormGroup({
     email: new FormControl(''),
@@ -36,15 +37,16 @@ export class LoginComponent implements OnInit {
         console.log(res);
         this.router.navigate(['home']);
       })
-      .catch((err) => console.log('error: ' + err));
+      .catch((err) => {
+        console.log('error: ' + err);
+        this.invalidSignIn = true;
+      }
+    );
   }
 
   checkIfLoggedIn() {
-    let loggedIn = false;
-    if (firebase.auth().currentUser != null) {
-      return true;
-    } else {
-      return false;
+    if (this.authService.isLoggedIn()) {
+      // this.router.navigate(['home']);
     }
   }
 
