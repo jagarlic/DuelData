@@ -24,8 +24,9 @@ export class EventsService {
   currCount: number;
 
   submitUserData(players: player[], eventName: string, format: string) {
-    let newEvent: Event = { name: eventName, players: players, format: format, timeStamp : new Date() }
-    console.log(newEvent);
+    let today: Date = new Date();
+    let newEvent: Event = { name: eventName, players: players, format: format, timeStamp : today.toJSON() }
+    console.log(today);
     let currUID = this.auth.getUserData().uid;
     firebase.database().ref('/events/' + currUID + '/').push(newEvent);
   }

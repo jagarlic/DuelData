@@ -13,7 +13,6 @@ export class NavComponent implements OnInit {
 
   constructor(private router: Router, private authService :AuthService, private ngZone : NgZone) {
     this.currentURL = this.router.url;
-    console.log(this.currentURL);
   }
 
   ngOnInit() {

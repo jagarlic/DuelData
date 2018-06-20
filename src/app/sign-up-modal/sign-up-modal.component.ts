@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -11,7 +11,8 @@ import { FormControl, FormGroup, FormBuilder, Validators, FormsModule } from '@a
 })
 export class SignUpModalComponent implements OnInit {
 
-  closeResult : string;
+  invalidSignUpResult: string;
+  closeResult: string;
 
   signUpForm = new FormGroup({
     email: new FormControl(''),
@@ -22,46 +23,48 @@ export class SignUpModalComponent implements OnInit {
   });
 
   constructor(private authService: AuthService, private router: Router,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal, private ngZone: NgZone) { }
 
   ngOnInit() {
   }
 
   open(content) {
+    console.log(content);
     this.modalService.open(content).result.then((result) => {
       if (result == "Submit") {
+        this.invalidSignUpResult = null;
         this.signUpWithEmail();
       }
-      // this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
-      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
 
   signUpWithEmail() {
-    if (this.signUpForm.get('password').value == this.signUpForm.get('passConfirm').value) {
-      this.authService.signUp(this.signUpForm.get('email').value, this.signUpForm.get('password').value, 
-      this.signUpForm.get('firstname').value + " " + this.signUpForm.get('lastname').value).then(() => {
-        this.updateUserInfo(this.signUpForm.get('firstname') + " " + this.signUpForm.get('lastname'));
-        // this.authService.getUserData().updateProfile({
-        //   displayName: this.signUpForm.get('firstname').value  + " " + this.signUpForm.get('lastname').value,
-        //   photoURL : ""
-        // })
-      })
-      .catch((err) => {
-        this.updateUserInfo(this.signUpForm.get('firstname') + " " + this.signUpForm.get('lastname'));
-        console.log('error: ' + err)
-      });
-      this.router.navigate(['home']);
+    if (this.checkForm()) {
+      this.authService.signUp(this.signUpForm.get('email').value, this.signUpForm.get('password').value,
+        this.signUpForm.get('firstname').value, this.signUpForm.get('lastname').value).then((response) => {
+          if (response) {
+            this.invalidSignUpResult = response;
+          } else {
+            this.ngZone.run(() => this.router.navigate(['home']));
+          }
+        })
     }
   }
 
-  updateUserInfo(name) {
-    console.log("updating")
-    this.authService.getUserData().updateProfile({
-        displayName: name,
-        photoURL : ""
-      })
+  checkForm() {
+    var valid = true;
+    if (this.signUpForm.get('password').value != this.signUpForm.get('passConfirm').value) {
+      this.invalidSignUpResult = "";
+      this.invalidSignUpResult += "Passwords do not match.";
+      valid = false;
+    }
+    if (this.signUpForm.get('firstname').value == '' || this.signUpForm.get('lastname').value == '') {
+      if (!this.invalidSignUpResult) this.invalidSignUpResult = "";
+      this.invalidSignUpResult += " First and last name required.";
+      valid = false;
+    }
+    return valid;
   }
 
   onSubmit() {

@@ -7,8 +7,18 @@
     float: right;
     color: black;
     font-size: 20px;
+    margin-left: 15px;
 }
 
 .past-events {
+    margin-bottom: 30px;
+}
+
+p {
+    color: white;
+}
+
+.card {
+    background-color: #343a40;
     margin-bottom: 30px;
 }

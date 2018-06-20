@@ -13,7 +13,8 @@ export class FormatStatsComponent implements OnInit {
 
   colors: Observable<any>;
   selectedFormat: string = "Select Format";
-  draftFormats: string[] = ["Standard", "Modern", "Legacy", "Dominaria", "M25", "RIX-IXL", "AMK-H0U", "AER-KLD"];
+  draftFormats: string[] = ["Standard", "Modern", "Legacy", "Pauper", "Dominaria", "M25", "RIX-IXL", "AMK-HOU",
+  "AER-KLD", "EMN-SOI", "OGW-BFZ", "Magic Origins", "Khans Block", "M15", "Theros Block", "M14", "RTR Block", "Innistrad", "Other"];
 
   public getDataForSet(setName) {
     if (this.selectedFormat != "Select Format") {
@@ -43,7 +44,11 @@ export class FormatStatsComponent implements OnInit {
   constructor(private database: AngularFireDatabase, private colorsService: ColorsService) { }
 
   ngOnInit() {
-    this.colorsService.createNewSet("Legacy");
+    this.colorsService.createNewSet("Pauper");
+    // this.colorsService.createNewSet("Modern");
+    // this.colorsService.createNewSet("RIX-IXL");
+    // this.colorsService.createNewSet("RTR Block");
+    // this.colorsService.createNewSet("Innistrad");
     // this.getDataForSet("Dominaria");
   }
 

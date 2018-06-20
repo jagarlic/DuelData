@@ -7,44 +7,58 @@ import { Observable, of } from 'rxjs';
 import { Event } from '../../event';
 import { NavComponent } from '../nav/nav.component';
 import { DatePipe } from '@angular/common'
+import { ReversePipePipe } from '../../reverse-pipe.pipe'
+import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
   selector: 'app-pastevents',
   templateUrl: './pastevents.component.html',
   styleUrls: ['./pastevents.component.css']
 })
-export class PasteventsComponent implements OnInit {
+export class PasteventsComponent implements OnInit, OnDestroy {
 
   events: Observable<any>;
   uid;
   eventsLoaded: boolean = false;
-  username: string;
+  name: string;
+  private sub : any;
 
 
   constructor(private auth: AuthService, private database: AngularFireDatabase, private cdRef: ChangeDetectorRef) {
-    console.log("NG Called")
-    firebase.auth().onAuthStateChanged(user => {
+    var db = firebase.database();
+    this.sub = firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.uid = user.uid;
-        console.log(user.toJSON());
-        if (user.displayName == "") {
-          this.username = user.toJSON.name;
+        if (user.displayName == null) {
+          console.log(user.displayName)
+          db.ref('/users/' + this.uid).once('value').then((snapshot) => {
+            this.name = snapshot.val().first;
+            if (!this.cdRef['destroyed']) {
+              this.eventsLoaded = true;
+              this.cdRef.detectChanges();
+            }
+          });
         } else {
-          this.username = user.displayName;
-        }
+          this.name = user.displayName;
+        } 
         this.events = this.database.list('/events/' + this.uid).valueChanges();
-        this.eventsLoaded = true;
-        this.cdRef.detectChanges();
+        if (!this.cdRef['destroyed']) {
+          this.eventsLoaded = true;
+          this.cdRef.detectChanges();
+        }
         console.log(this.events);
       } else {
         console.log("No one is logged in");
       }
     });
-    // this.username = this.auth.getUserData().displayName;
   }
 
   ngOnInit() {
-    // this.uid = this.route.snapshot.data['userUid'];
+
+  }
+
+  ngOnDestroy() {
+    // this.sub.unsubscribe();
   }
 
   checkColors(player, color) {
@@ -55,19 +69,6 @@ export class PasteventsComponent implements OnInit {
     } else {
       return false;
     }
-  }
-
-  retrieveEvents() {
-    // let uid = this.auth.getUserData().uid;
-    // console.log(uid);
-    // this.database.list<Event>('/events/' + uid).valueChanges().subscribe(
-    //   events => {
-    //     console.log(events);
-    //     this.events = events;
-    //   }
-    // );
-    console.log(this.events);
-
   }
 
 }

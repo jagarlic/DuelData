@@ -1,8 +1,30 @@
 <app-nav *ngIf="eventsLoaded"></app-nav>
 <div class="container" *ngIf="eventsLoaded">
-  <div class="row past-events">
-    <div class="col-sm-12 col-md-3">
-      <h3>Welcome to DuelData {{this.username}}</h3>
+  <div class="row past-events" *ngIf="this.name != null">
+    <div class="col-sm-12 col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h3>Welcome to DuelData {{this.name}}!</h3>
+        </div>
+        <div class="card-body">
+          <p>We are glad to have you!</p>
+          <p>This is your home page where you can view all of your previous tournaments.</p>
+          <p>Use our user friendly event logger to help shed some light on the strength and prevelance of different color combinations
+            use in all limited and constructed formats.</p>
+          <p>As DuelData is a new application, any feedback on the site is greatly appreciated!</p>
+          <div class="card-footer">
+            <p>
+              <i style="font-size:1em; color:deepskyblue; padding-right:5px;" class="fas fa-envelope"></i>dueldata@gmail.com
+            </p>
+            <p>
+              <i style="font-size:1em; color:deepskyblue; padding-right:5px;" class="fab fa-github"></i>github.com/jagarlic
+            </p>
+            <p>
+              Created by Jack Garlick
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="col-sm-12 col-md-8 col-centered">
       <div class="text-center">
@@ -10,11 +32,11 @@
         <!-- <button class="btn btn-outline-primary text-center" (click)="newEvent()">New Event +</button> -->
       </div>
       <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
-        <ngb-panel *ngFor="let event of this.events | async">
+        <ngb-panel *ngFor="let event of this.events | async | reverse">
           <ng-template ngbPanelTitle>
             <span class="eventName"> {{event.name}} </span>
+            <span class="eventFormat">{{event.timeStamp | date:'shortDate'}} </span>
             <span class="eventFormat"> {{event.format}} </span>
-            <span class="eventFormat"> {{event.timeStamp | date}} </span>
           </ng-template>
           <ng-template ngbPanelContent>
             <ul class="list-group">

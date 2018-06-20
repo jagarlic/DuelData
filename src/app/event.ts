@@ -5,5 +5,5 @@ export interface Event {
     name : string;
     format : string;
     players : player[];
-    timeStamp : Date;
+    timeStamp : string;
 }

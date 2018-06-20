@@ -9,7 +9,7 @@
           </span>
           <span class="playerSpacer">
             <div *ngIf="player.name != 'Bye' && pairTable[0][i].name != 'Bye'" ngbDropdown class="d-inline-block dropdownRight">
-              <button class="btn btn-outline-primary" id="eventType" ngbDropdownToggle>{{pairTable[0][i].currentRoundCount}}</button>
+              <button class="btn btn-light" style="border:solid 1px black" id="eventType" ngbDropdownToggle>{{pairTable[0][i].currentRoundCount}}</button>
               <div ngbDropdownMenu aria-labelledby="eventType">
                 <button class="dropdown-item" (click)="logWin('0', pairTable[0][i])">0</button>
                 <button class="dropdown-item" (click)="logWin('1', pairTable[0][i])">1</button>
@@ -23,7 +23,7 @@
           </span>
           <span class="playerSpacer">
             <div *ngIf="player.name != 'Bye' && pairTable[0][i].name != 'Bye'" ngbDropdown class="d-inline-block dropdownLeft">
-              <button class="btn btn-outline-primary" id="eventType" ngbDropdownToggle>{{player.currentRoundCount}}</button>
+              <button class="btn btn-light" style="border:solid 1px black" id="eventType" ngbDropdownToggle>{{player.currentRoundCount}}</button>
               <div ngbDropdownMenu aria-labelledby="eventType">
                 <button class="dropdown-item" (click)="logWin('0', player)">0</button>
                 <button class="dropdown-item" (click)="logWin('1', player)">1</button>
@@ -36,8 +36,8 @@
     </div>
   </div>
   <div class="col-sm-12 text-center move-down">
-    <button *ngIf="!eventOver" type="button" class="btn btn-primary" (click)="nextRound()">Submit Round</button>
-    <button *ngIf="eventOver && !eventSubmitted" type="button" class="btn btn-primary" (click)="finishEvent()">Finish Event</button>
+    <button *ngIf="!eventOver" type="button" class="btn btn-primary" style="background-color: deepskyblue; border:none" (click)="nextRound()">Submit Round</button>
+    <button *ngIf="eventOver && !eventSubmitted" type="button" class="btn btn-primary" style="background-color: deepskyblue; border:none" (click)="finishEvent()">Finish Event</button>
   </div>
   <div class="col-md-8 col-centered" *ngIf="eventSubmitted">
     <h4 class="text-center">Results</h4>

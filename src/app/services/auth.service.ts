@@ -6,12 +6,17 @@ import { Router } from "@angular/router";
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { Observable, of } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { map } from "rxjs/operators";
+import { tap } from "rxjs/operators";
+import { User } from '../user';
 
 @Injectable()
 export class AuthService {
   private user: Observable<firebase.User>;
   private userDetails: firebase.User = null;
   private loggedIn: boolean;
+  public firstName: string;
 
   getWidgets() {
     return of([]);
@@ -44,19 +49,18 @@ export class AuthService {
   }
 
   isLoggedIn() {
-    var checkSub = firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        // this.loggedIn = true;
-      } else {
-        // this.loggedIn = false;
-      }
-    });
-    return checkSub;
-    // return firebase.auth().currentUser;
+    return this._firebaseAuth.authState
+      .pipe(take(1))
+      .pipe(map(user => !!user))
+      .pipe(tap(loggedIn => {
+        if (!loggedIn) {
+          console.log("access denied")
+          this.router.navigate(['/'])
+        }
+      }));
   }
 
   getUserData() {
-    // console.log(typeof firebase.auth().currentUser);
     return firebase.auth().currentUser;
   }
 
@@ -65,14 +69,24 @@ export class AuthService {
       .then((res) => this.router.navigate(['/']));
   }
 
-  signUp(email, password, name) {
-    this._firebaseAuth.auth.createUserWithEmailAndPassword(email, password).then(function() {
-      
+  signUp(email, password, firstName, lastName) {
+    return this._firebaseAuth.auth.createUserWithEmailAndPassword(email, password).then(function (user) {
+      let newUser : User = {first: firstName, last: lastName}
+      firebase.database().ref('/users/').child(user.user.uid).set(newUser);
     }).catch(function (error) {
       var errorCode = error.code;
       var errorMessage = error.message;
       console.log(errorMessage);
+      return errorMessage;
     });
-    return this._firebaseAuth.auth.signInWithEmailAndPassword(email, password);
+  }
+
+  getName() {
+    firebase.database().ref('/users/' + this.userDetails.uid).once('value').then((snapshot) => {
+      this.firstName = snapshot.val().first;
+    }).then(() => {
+      return this.firstName;
+    });
+    return this.firstName;
   }
 }

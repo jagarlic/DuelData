@@ -49,7 +49,8 @@ export class EventComponent implements OnInit {
     return Array(n);
   }
 
-  draftFormats: string[] = ["Standard", "Modern", "Legacy", "Dominaria", "M25", "RIX-IXL", "AMK-H0U", "AER-KLD", "Other"];
+  draftFormats: string[] = ["Standard", "Modern", "Legacy", "Pauper", "Dominaria", "M25", "RIX-IXL", "AMK-H0U",
+  "AER-KLD", "EMN-SOI", "OGW-BFZ", "Magic Origins", "Khans Block", "M15", "Theros Block", "M14", "RTR Block", "Innistrad", "Other"];
   selectedDraftFormat: string = "Format";
 
   selectDraftFormat(format) {

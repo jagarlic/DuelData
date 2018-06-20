@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { ReactiveFormsModule, FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -21,7 +21,12 @@ export class LoginComponent implements OnInit {
     password: new FormControl(''),
   });
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private ngZone : NgZone) {
+    if (this.authService.isLoggedIn()) {
+      this.ngZone.run(() => this.router.navigate(['home']));
+      console.log("should go to home")
+    }
+  }
 
   signInWithGoogle() {
     this.authService.signInWithGoogle()
@@ -44,14 +49,7 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  checkIfLoggedIn() {
-    if (this.authService.isLoggedIn()) {
-      // this.router.navigate(['home']);
-    }
-  }
-
   ngOnInit() {
-    this.checkIfLoggedIn()
 
   }
 }

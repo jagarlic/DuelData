@@ -19,21 +19,26 @@
         </div>
         <div class="form-group">
           <label for="email">Email:</label>
-          <input class="form-control" id="email" required type="email" formControlName="email" placeholder="Email">
+          <input class="form-control" id="email" required type="email" formControlName="email" placeholder="Email" aria-describedby="emailHelp">
           <small id="emailHelp" class="form-text text-muted">We'll never share your email or contact you.</small>
         </div>
         <div class="form-group">
           <label for="pass">Password:</label>
           <input class="form-control" required type="password" formControlName="password" placeholder="Password">
+          <small id="emailHelp" class="form-text text-muted">Must be atleast 6 characters</small>
         </div>
         <div class="form-group">
           <label for="confirm">Confirm:</label>
           <input class="form-control" id="confirm" required type="password" formControlName="passConfirm" placeholder="Confirm Password">
         </div>
-        <button class="form-control" type="submit" class="btn btn-success" (click)="c('Submit')">Sign Up</button>
+        <button class="form-control" type="submit" class="btn btn-success" style="background-color: deepskyblue; border:none" (click)="c('Submit')">Sign Up</button>
       </form>
     </div>
   </ng-template>
+
+  <div *ngIf="this.invalidSignUpResult">
+    <ngb-alert type="danger" [dismissible]="false">Error signing up: <br> {{this.invalidSignUpResult}}</ngb-alert>
+  </div>
 
   <button class="btn btn-lg btn-primary" (click)="open(content)" style="background-color: deepskyblue; border:none">Sign Up</button>
 

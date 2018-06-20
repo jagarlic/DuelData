@@ -10,6 +10,7 @@
     position: relative;
     /* color: #000; */
     text-decoration: none;
+    cursor: pointer;
 }
 
 .nav-link:hover {
@@ -38,5 +39,6 @@
   }
 
   .navbar-brand {
+      cursor: pointer;
       font-size: 1.5rem;
   }

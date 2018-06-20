@@ -12,7 +12,6 @@ import { AuthGuard } from './services/auth-guard.service';
 
 import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
-import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { AppRoutes } from './app.routes';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
@@ -24,11 +23,12 @@ import { PasteventsComponent } from './elements/pastevents/pastevents.component'
 import { NavComponent } from './elements/nav/nav.component';
 import { ChartsModule } from 'ng2-charts';
 import { FormatStatsComponent } from './elements/format-stats/format-stats.component';
+import { ReversePipePipe } from './reverse-pipe.pipe';
+import { FooterComponent } from './elements/footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AppNavbarComponent,
     HomeComponent,
     LoginComponent,
     SignUpModalComponent,
@@ -37,7 +37,9 @@ import { FormatStatsComponent } from './elements/format-stats/format-stats.compo
     SwissComponent,
     PasteventsComponent,
     NavComponent,
-    FormatStatsComponent
+    FormatStatsComponent,
+    ReversePipePipe,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
