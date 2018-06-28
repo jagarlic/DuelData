@@ -47,7 +47,6 @@ export class RoundrobinComponent implements OnInit {
   }
 
   logWin(count, p) {
-    console.log(p);
     if (this.players[p.index].currentRoundCount == "2") {
       this.players[p.index].currentRoundCount = "";
       this.players[p.index].setWins--;
@@ -101,7 +100,6 @@ export class RoundrobinComponent implements OnInit {
         }
       }
     }
-    console.log(this.players);
     this.pairTable = rotated;
   }
 

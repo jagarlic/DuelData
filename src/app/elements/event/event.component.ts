@@ -34,7 +34,6 @@ export class EventComponent implements OnInit {
     this.selectedEventType = "Event Type";
     this.selectedRoundCount = "# of Rounds";
     this.cdRef.detectChanges();
-    console.log("changes detected");
   }
 
   selectEventType(type) {

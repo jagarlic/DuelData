@@ -92,7 +92,6 @@ export class SwissComponent implements OnInit {
   rotateMatrix(matrix) {
     var n = matrix.length;
     let rotated = JSON.parse(JSON.stringify(matrix));
-    console.log(this.playedTable);
 
     for (let i = 0; i < this.pairTable[0].length; i++) {
       let currTop = this.pairTable[0][i];
@@ -131,9 +130,7 @@ export class SwissComponent implements OnInit {
       }
       if (i == this.players.length - 1 && pairedPlayers.length != this.players.length) {
         this.players = this.shuffle(this.players);
-        console.log(this.players);
         pairedPlayers = [];
-        console.log(pairedPlayers);
         i = 0;
         currPairIndex = 0;
         rotated = JSON.parse(JSON.stringify(matrix));

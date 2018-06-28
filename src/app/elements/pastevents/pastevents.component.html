@@ -10,19 +10,32 @@
           <p>We are glad to have you!</p>
           <p>This is your home page where you can view all of your previous tournaments.</p>
           <p>Use our user friendly event logger to help shed some light on the strength and prevelance of different color combinations
-            use in all limited and constructed formats.</p>
+            in both limited and constructed formats.</p>
           <p>As DuelData is a new application, any feedback on the site is greatly appreciated!</p>
           <div class="card-footer">
             <p>
-              <i style="font-size:1em; color:deepskyblue; padding-right:5px;" class="fas fa-envelope"></i>dueldata@gmail.com
-            </p>
-            <p>
-              <i style="font-size:1em; color:deepskyblue; padding-right:5px;" class="fab fa-github"></i>github.com/jagarlic
+              <i style="font-size:1em; color:deepskyblue; padding-right:5px;" class="fas fa-envelope"></i>jgarlick@dueldatamtg.com
             </p>
             <p>
               Created by Jack Garlick
             </p>
+            <p>
+              <i style="font-size:1em; color:deepskyblue; padding-right:5px;" class="fab fa-github"></i>github.com/jagarlic
+            </p>
           </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3>Your Leaderboard</h3>
+          <small style="color:gray">Ordered by win count</small>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let player of this.leaderBoard | async | reverse; let i = index">
+              {{i + 1}}. {{player.name}} ({{player.wins}} -{{player.losses}})
+            </li>
+          </ul>
         </div>
       </div>
     </div>

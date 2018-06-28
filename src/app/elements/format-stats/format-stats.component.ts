@@ -44,12 +44,7 @@ export class FormatStatsComponent implements OnInit {
   constructor(private database: AngularFireDatabase, private colorsService: ColorsService) { }
 
   ngOnInit() {
-    this.colorsService.createNewSet("Pauper");
-    // this.colorsService.createNewSet("Modern");
-    // this.colorsService.createNewSet("RIX-IXL");
-    // this.colorsService.createNewSet("RTR Block");
-    // this.colorsService.createNewSet("Innistrad");
-    // this.getDataForSet("Dominaria");
+    this.colorsService.createNewSet("Standard");
   }
 
   public barChartOptions: any = {

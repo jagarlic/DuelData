@@ -25,10 +25,50 @@ export class EventsService {
 
   submitUserData(players: player[], eventName: string, format: string) {
     let today: Date = new Date();
-    let newEvent: Event = { name: eventName, players: players, format: format, timeStamp : today.toJSON() }
-    console.log(today);
+    let newEvent: Event = { name: eventName, players: players, format: format, timeStamp: today.toJSON() }
     let currUID = this.auth.getUserData().uid;
     firebase.database().ref('/events/' + currUID + '/').push(newEvent);
+    var lbref = firebase.database().ref('/leaderboards/' + currUID + '/');
+    lbref.once('value', function (snapshot) {
+      var exists = (snapshot.val() !== null);
+      if (exists) {
+        for (let p of players) {
+          if (snapshot.hasChild(p.name)) {
+            firebase.database().ref('/leaderboards/' + currUID + '/' + p.name).transaction(function (data) {
+              if (data != null) {
+                data.wins = data.wins + p.setWins;
+                data.losses += p.losses;
+                return data;
+              } else {
+                return 0;
+              }
+            }, function (error, committed, snapshot) {
+              if (error) {
+                console.log("error in transaction");
+              } else if (!committed) {
+                console.log("transaction not committed");
+              } else {
+                console.log("Transaction Committed");
+              }
+            }, true);
+          } else {
+            lbref.child(p.name).set({
+              name: p.name,
+              wins: p.setWins,
+              losses: p.losses
+            });
+          }
+        }
+      } else {
+        for (let p of players) {
+          lbref.child(p.name).set({
+            name: p.name,
+            wins: p.setWins,
+            losses: p.losses
+          });
+        }
+      }
+    });
   }
 
   handleData(players: player[], setName: string) {
@@ -49,40 +89,65 @@ export class EventsService {
         let colorString: string = "";
         for (let color of colorArr) {
           colorString = colorString.concat(color);
-          let currColor = this.database.object('/' + setName + '/' + color);
-          currColor.query.once('value')
-            .then(snapshot => {
-              let obj = snapshot.val()
-              currColor.update({
-                wins: Number(obj.wins) + Number(players[i].setWins),
-                losses: Number(obj.losses) + Number(players[i].losses),
-                decksPlayed: Number(obj.decksPlayed) + 1
-              })
-            })
+          this.colorTransaction(setName, color, players[i]);
+          // let currColor = this.database.object('/' + setName + '/' + color);
+          // currColor.query.once('value')
+          //   .then(snapshot => {
+          //     let obj = snapshot.val()
+          //     currColor.update({
+          //       wins: Number(obj.wins) + Number(players[i].setWins),
+          //       losses: Number(obj.losses) + Number(players[i].losses),
+          //       decksPlayed: Number(obj.decksPlayed) + 1
+          //     })
+          //   })
         }
         if (colorString.length > 1) {
           let currColor;
           if (colorString.length == 2) {
-            currColor = this.database.object('/' + setName + '/dual/' + colorString);
+            this.colorTransaction(setName, 'dual/' + colorString, players[i]);
+            // currColor = this.database.object('/' + setName + '/dual/' + colorString);
           } else if (colorString.length == 3) {
-            currColor = this.database.object('/' + setName + '/three/' + colorString);
+            this.colorTransaction(setName, 'three/' + colorString, players[i]);
+            // currColor = this.database.object('/' + setName + '/three/' + colorString);
           } else if (colorString.length == 4) {
-            currColor = this.database.object('/' + setName + '/four/' + colorString);
+            this.colorTransaction(setName, 'four/' + colorString, players[i]);
+            // currColor = this.database.object('/' + setName + '/four/' + colorString);
           } else {
-            currColor = this.database.object('/' + setName + '/five/' + colorString);
+            this.colorTransaction(setName, 'five/' + colorString, players[i]);
+            // currColor = this.database.object('/' + setName + '/five/' + colorString);
           }
-          currColor.query.once('value')
-            .then(snapshot => {
-              let obj = snapshot.val()
-              currColor.update({
-                wins: Number(obj.wins) + Number(players[i].setWins),
-                losses: Number(obj.losses) + Number(players[i].losses),
-                decksPlayed: Number(obj.decksPlayed) + 1
-              })
-            })
-
+          // currColor.query.once('value')
+          //   .then(snapshot => {
+          //     let obj = snapshot.val()
+          //     currColor.update({
+          //       wins: Number(obj.wins) + Number(players[i].setWins),
+          //       losses: Number(obj.losses) + Number(players[i].losses),
+          //       decksPlayed: Number(obj.decksPlayed) + 1
+          //     })
+          //   })
         }
       }
     }
+  }
+
+  colorTransaction(setName, colorString, player) {
+    firebase.database().ref('/' + setName + '/' + colorString).transaction(function (data) {
+      if (data != null) {
+        data.wins = data.wins + player.setWins;
+        data.losses =  data.losses + player.losses;
+        data.decksPlayed++;
+        return data;
+      } else {
+        return 0;
+      }
+    }, function (error, committed, snapshot) {
+      if (error) {
+        console.log("error in transaction");
+      } else if (!committed) {
+        console.log("transaction not committed");
+      } else {
+        // console.log("Transaction Committed");
+      }
+    }, true);
   }
 }

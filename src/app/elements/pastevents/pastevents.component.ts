@@ -21,6 +21,7 @@ export class PasteventsComponent implements OnInit, OnDestroy {
   uid;
   eventsLoaded: boolean = false;
   name: string;
+  leaderBoard: Observable<any>;
   private sub : any;
 
 
@@ -42,11 +43,12 @@ export class PasteventsComponent implements OnInit, OnDestroy {
           this.name = user.displayName;
         } 
         this.events = this.database.list('/events/' + this.uid).valueChanges();
+        this.leaderBoard = this.database.list('/leaderboards/' + this.uid, ref => ref.orderByChild('wins')).valueChanges();
+        // console.log(this.leaderBoard)
         if (!this.cdRef['destroyed']) {
           this.eventsLoaded = true;
           this.cdRef.detectChanges();
         }
-        console.log(this.events);
       } else {
         console.log("No one is logged in");
       }
